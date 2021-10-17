@@ -1,5 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { generateEntryName } from "../../helpers/generateEntryName";
+import { setEntrySlug, setTemplateParent } from "../../redux/rightPanelReducer";
+import { AppDispatch, RootState } from "../../redux/store";
 
 type ItemSubProp = {
   route: string;
@@ -10,9 +13,14 @@ type Entries = {
   rowid: number;
   title: string;
   name: string;
+  slug: string;
 }[];
 
-const ItemSub = ({ route, expand }: ItemSubProp) => {
+const ItemSub = memo(({ route, expand }: ItemSubProp) => {
+  const refresher = useSelector(
+    (state: RootState) => state.leftPanelReducer.refresher
+  );
+  const dispatch = useDispatch<AppDispatch>();
   const [hasTemplate, setHasTemplate] = useState(false);
   const [entries, setEntries] = useState<Entries>([]);
   const [addingEntry, setAddingEntry] = useState(false);
@@ -40,6 +48,7 @@ const ItemSub = ({ route, expand }: ItemSubProp) => {
       body: JSON.stringify({ parent: route }),
     });
     refresh();
+    dispatch(setTemplateParent(route));
   };
   const createNewEntry = async () => {
     if (newEntryTitle.current?.innerHTML) {
@@ -56,13 +65,14 @@ const ItemSub = ({ route, expand }: ItemSubProp) => {
           title: title,
         }),
       });
+      dispatch(setEntrySlug(route + name));
     }
   };
   useEffect(() => {
     if (expand) {
       refresh();
     }
-  }, [route, expand]);
+  }, [route, expand, refresher]);
   useEffect(() => {
     if (addingEntry) {
       newEntryTitle.current?.focus();
@@ -74,9 +84,44 @@ const ItemSub = ({ route, expand }: ItemSubProp) => {
         <>
           <div className="left-panel__grey-wrapper left-panel__item__grey-wrapper">
             {hasTemplate ? (
-              <button>Edit Template</button>
+              <button
+                onClick={() => {
+                  dispatch(setTemplateParent(route));
+                }}
+              >
+                Edit Template
+              </button>
             ) : (
               <button onClick={() => addTemplate()}>Add Template</button>
+            )}
+          </div>
+          <div className="left-panel__grey-wrapper left-panel__item__grey-wrapper">
+            {addingEntry ? (
+              <div className="left-panel__flex left-panel__flex--align-center">
+                <div
+                  contentEditable
+                  ref={newEntryTitle}
+                  className="left-panel__item__new-title left-panel__flex--grow"
+                ></div>
+                <button
+                  onClick={async () => {
+                    await createNewEntry();
+                    setAddingEntry(false);
+                    refresh();
+                  }}
+                >
+                  submit
+                </button>
+                <button
+                  onClick={() => {
+                    setAddingEntry(false);
+                  }}
+                >
+                  cancel
+                </button>
+              </div>
+            ) : (
+              <button onClick={() => setAddingEntry(true)}>Add Entry</button>
             )}
           </div>
           <div>
@@ -84,7 +129,12 @@ const ItemSub = ({ route, expand }: ItemSubProp) => {
               <>
                 {entries.map((entry) => (
                   <div className="left-panel__item__entry" key={entry.rowid}>
-                    <button className="left-panel__item__entry-button">
+                    <button
+                      className="left-panel__item__entry-button"
+                      onClick={() => {
+                        dispatch(setEntrySlug(entry.slug));
+                      }}
+                    >
                       <div className="left-panel__item__entry-slug">
                         {entry.name}
                       </div>
@@ -98,35 +148,6 @@ const ItemSub = ({ route, expand }: ItemSubProp) => {
             ) : (
               <></>
             )}
-            <div className="left-panel__grey-wrapper left-panel__item__grey-wrapper">
-              {addingEntry ? (
-                <div className="left-panel__flex left-panel__flex--align-center">
-                  <div
-                    contentEditable
-                    ref={newEntryTitle}
-                    className="left-panel__item__new-title left-panel__flex--grow"
-                  ></div>
-                  <button
-                    onClick={async () => {
-                      await createNewEntry();
-                      setAddingEntry(false);
-                      refresh();
-                    }}
-                  >
-                    submit
-                  </button>
-                  <button
-                    onClick={() => {
-                      setAddingEntry(false);
-                    }}
-                  >
-                    cancel
-                  </button>
-                </div>
-              ) : (
-                <button onClick={() => setAddingEntry(true)}>Add Entry</button>
-              )}
-            </div>
           </div>
         </>
       ) : (
@@ -134,6 +155,6 @@ const ItemSub = ({ route, expand }: ItemSubProp) => {
       )}
     </div>
   );
-};
+});
 
 export default ItemSub;

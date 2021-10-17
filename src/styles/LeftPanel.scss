@@ -9,6 +9,7 @@
   width: 100%;
   max-width: 30rem;
   line-height: 100%;
+  padding-bottom: 50px;
   button {
     border: 0;
     background-color: unset;
@@ -97,7 +98,7 @@
       padding-bottom: 5px;
       border-bottom: 1px solid #eee;
       line-height: 120%;
-      &:nth-last-child(2) {
+      &:nth-last-child(1) {
         border-bottom: 0;
       }
       .left-panel__item__entry-button {
@@ -129,5 +130,17 @@
     background-color: #eee;
     color: #555;
     padding: 10px;
+    margin-bottom: 10px;
+  }
+  .left-panel__white-wrapper {
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #555;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
   }
 }

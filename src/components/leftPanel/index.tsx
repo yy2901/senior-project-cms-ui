@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import AddItem from "./AddItem";
 import Item from "./Item";
 import "../../styles/LeftPanel.scss";
+import DeletedButton from "./DeletedButton";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 type API = {
   rowid: number;
@@ -10,6 +13,9 @@ type API = {
 
 const LeftPanel = () => {
   const [apis, setApis] = useState<API>([]);
+  const refresher = useSelector(
+    (state: RootState) => state.leftPanelReducer.refresher
+  );
   const refresh = () => {
     fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/api-routes")
       .then((res) => res.json())
@@ -17,7 +23,7 @@ const LeftPanel = () => {
   };
   useEffect(() => {
     refresh();
-  }, []);
+  }, [refresher]);
   return (
     <div className="left-panel">
       {apis.length ? (
@@ -33,6 +39,7 @@ const LeftPanel = () => {
         <></>
       )}
       <AddItem refresh={refresh} />
+      <DeletedButton />
     </div>
   );
 };

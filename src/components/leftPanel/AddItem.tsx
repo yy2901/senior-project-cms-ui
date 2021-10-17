@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { parseDashCase } from "../../helpers/parseDashCase";
+import { setRouteUrl } from "../../redux/rightPanelReducer";
+import { AppDispatch } from "../../redux/store";
 
 type AddItemType = {
   refresh: () => void;
@@ -8,18 +11,21 @@ type AddItemType = {
 const AddItem = ({ refresh }: AddItemType) => {
   const [adding, setAdding] = useState(false);
   const inputRoute = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch<AppDispatch>();
   const createRoute = async () => {
     const newRoute = inputRoute.current?.value;
     if (newRoute && newRoute.length > 0) {
+      const route = "/" + parseDashCase(newRoute);
       await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/api-routes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          route: "/" + parseDashCase(newRoute),
+          route,
         }),
       });
+      dispatch(setRouteUrl(route));
     }
   };
   useEffect(() => {

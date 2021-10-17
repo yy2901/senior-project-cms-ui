@@ -1,5 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { parseDashCase } from "../../helpers/parseDashCase";
+import {
+  refreshRightPanel,
+  RightPanelModal,
+  setModal,
+  setRouteUrl,
+} from "../../redux/rightPanelReducer";
+import { AppDispatch } from "../../redux/store";
 import ItemSub from "./ItemSub";
 
 type ItemProps = {
@@ -8,7 +16,8 @@ type ItemProps = {
   refresh: () => void;
 };
 
-const Item = ({ rowid, route, refresh }: ItemProps) => {
+const Item = memo(({ rowid, route, refresh }: ItemProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [renaming, setRenaming] = useState(false);
   const [expand, setExpand] = useState(false);
   const renamingValue = useRef<HTMLInputElement>(null);
@@ -32,14 +41,19 @@ const Item = ({ rowid, route, refresh }: ItemProps) => {
   };
   const deleteRoute = async () => {
     await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/api-routes", {
-      method: "DELETE",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        route: route,
+        rowid: rowid,
+        apiRoute: {
+          deleted: "TRUE",
+        },
       }),
     });
+    dispatch(setModal(RightPanelModal.TRASHCAN));
+    dispatch(refreshRightPanel());
   };
   useEffect(() => {
     if (renaming) {
@@ -77,7 +91,13 @@ const Item = ({ rowid, route, refresh }: ItemProps) => {
               />
             </>
           ) : (
-            <button>{route}</button>
+            <button
+              onClick={() => {
+                dispatch(setRouteUrl(route));
+              }}
+            >
+              {route}
+            </button>
           )}
         </div>
         <div className="left-panel__flex">
@@ -111,6 +131,6 @@ const Item = ({ rowid, route, refresh }: ItemProps) => {
       <ItemSub route={route} expand={expand} />
     </div>
   );
-};
+});
 
 export default Item;
