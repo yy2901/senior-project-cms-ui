@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { refreshLeftPanel } from "../../redux/leftPanelReducer";
 import { RightPanelModal, setModal } from "../../redux/rightPanelReducer";
 import { AppDispatch, RootState } from "../../redux/store";
+import TemplateEditor from "./editor/TemplateEditor";
 
 type TemplateDataType = {
   rowid: number;
@@ -53,6 +54,7 @@ const Template = () => {
       <button onClick={deleteTemplate}>delete template</button>
       <h1>Edit Template</h1>
       <h2>{data?.parent}</h2>
+      <TemplateEditor />
     </div>
   );
 };

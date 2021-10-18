@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { refreshLeftPanel } from "../../redux/leftPanelReducer";
 import { RightPanelModal, setModal } from "../../redux/rightPanelReducer";
 import { AppDispatch, RootState } from "../../redux/store";
+import dateParser from "../../helpers/dateParser";
 
 type EntryData = {
   title: string;
@@ -55,6 +56,7 @@ const Entry = memo(() => {
         <span>{data?.parent}</span>
         <span>{data?.name}</span>
       </h2>
+      <h3>{data && data.time && dateParser(data.time)}</h3>
     </div>
   );
 });
