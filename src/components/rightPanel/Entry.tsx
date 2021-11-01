@@ -18,6 +18,10 @@ type EntryData = {
   teaser: string;
 };
 
+type EntryContentType = {
+  [key: string]: any;
+};
+
 const Entry = memo(() => {
   const dispatch = useDispatch<AppDispatch>();
   const { entrySlug, refresher } = useSelector(
@@ -27,10 +31,29 @@ const Entry = memo(() => {
   const [contentTemplate, setContentTemplate] = useState<TemplateType>({
     fields: [],
   });
+  const [teaserTemplate, setTeaserTemplate] = useState<TemplateType>({
+    fields: [],
+  });
+  const [teaserData, setTeaserData] = useState<EntryContentType>({});
+  const [contentData, setContentData] = useState<EntryContentType>({});
   const refresh = () => {
     fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/entries" + entrySlug)
       .then((res) => res.json())
-      .then((res) => setData(res));
+      .then((res: EntryData) => {
+        setData(res);
+        try {
+          const teaser = JSON.parse(res.teaser);
+          if (teaser) {
+            setTeaserData(teaser);
+          }
+        } catch {}
+        try {
+          const content = JSON.parse(res.content);
+          if (content) {
+            setContentData(content);
+          }
+        } catch {}
+      });
   };
   const deleteEntry = async () => {
     if (data?.rowid) {
@@ -50,6 +73,24 @@ const Entry = memo(() => {
       dispatch(refreshLeftPanel());
     }
   };
+  const updateEntry = () => {
+    if (data) {
+      fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/entries", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "PUT",
+        body: JSON.stringify({
+          rowid: data.rowid,
+          entry: {
+            ...data,
+            teaser: JSON.stringify(teaserData),
+            content: JSON.stringify(contentData),
+          },
+        }),
+      });
+    }
+  };
   useEffect(() => {
     refresh();
   }, [refresher, entrySlug]);
@@ -66,20 +107,37 @@ const Entry = memo(() => {
               setContentTemplate(content);
             }
           } catch {}
+          try {
+            const teaser = JSON.parse(res.teaser);
+            if (teaser) {
+              setTeaserTemplate(teaser);
+            }
+          } catch {}
         });
     }
   }, [data]);
   return (
     <div>
       <button onClick={deleteEntry}>delete entry</button>
+      <button onClick={updateEntry}>Update entry</button>
       <h1>{data?.title}</h1>
       <h2>
         <span>{data?.parent}</span>
         <span>{data?.name}</span>
       </h2>
       <h3>{data && data.time && dateParser(data.time)}</h3>
+      <h3>Edit Teaser</h3>
+      <EntryEditor
+        template={teaserTemplate}
+        data={teaserData}
+        setData={setTeaserData}
+      />
       <h3>Edit Content</h3>
-      <EntryEditor template={contentTemplate} />
+      <EntryEditor
+        template={contentTemplate}
+        data={contentData}
+        setData={setContentData}
+      />
     </div>
   );
 });

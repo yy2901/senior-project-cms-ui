@@ -5,6 +5,7 @@ import "../../styles/LeftPanel.scss";
 import DeletedButton from "./DeletedButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import ToggleFileManagerButton from "./ToggleFileManagerButton";
 
 type API = {
   rowid: number;
@@ -40,6 +41,7 @@ const LeftPanel = () => {
       )}
       <AddItem refresh={refresh} />
       <DeletedButton />
+      <ToggleFileManagerButton />
     </div>
   );
 };

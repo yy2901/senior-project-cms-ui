@@ -1,5 +1,6 @@
-import LeftPanel from "./components/leftPanel";
-import RightPanel from "./components/rightPanel";
+import LeftPanel from "./components/leftPanel/LeftPanel";
+import Popup from "./components/popup/Popup";
+import RightPanel from "./components/rightPanel/RightPanel";
 import "./styles/index.scss";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <div className="App">
       <LeftPanel />
       <RightPanel />
+      <Popup />
     </div>
   );
 }
