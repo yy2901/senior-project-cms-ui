@@ -18,7 +18,7 @@ const LeftPanel = () => {
     (state: RootState) => state.leftPanelReducer.refresher
   );
   const refresh = () => {
-    fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/api-routes")
+    fetch("/_editor/api-routes")
       .then((res) => res.json())
       .then((res) => setApis(res));
   };

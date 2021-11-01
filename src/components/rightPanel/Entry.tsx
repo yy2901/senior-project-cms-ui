@@ -37,7 +37,7 @@ const Entry = memo(() => {
   const [teaserData, setTeaserData] = useState<EntryContentType>({});
   const [contentData, setContentData] = useState<EntryContentType>({});
   const refresh = () => {
-    fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/entries" + entrySlug)
+    fetch("/_editor/entries" + entrySlug)
       .then((res) => res.json())
       .then((res: EntryData) => {
         setData(res);
@@ -57,7 +57,7 @@ const Entry = memo(() => {
   };
   const deleteEntry = async () => {
     if (data?.rowid) {
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/entries", {
+      await fetch("/_editor/entries", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const Entry = memo(() => {
   };
   const updateEntry = () => {
     if (data) {
-      fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/entries", {
+      fetch("/_editor/entries", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -96,9 +96,7 @@ const Entry = memo(() => {
   }, [refresher, entrySlug]);
   useEffect(() => {
     if (data?.parent) {
-      fetch(
-        process.env.REACT_APP_CMS_BACKEND + "/_editor/templates" + data.parent
-      )
+      fetch("/_editor/templates" + data.parent)
         .then((res) => res.json())
         .then((res) => {
           try {

@@ -26,7 +26,7 @@ const ItemSub = memo(({ route, expand }: ItemSubProp) => {
   const [addingEntry, setAddingEntry] = useState(false);
   const newEntryTitle = useRef<HTMLDivElement>(null);
   const refresh = () => {
-    fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/templates" + route)
+    fetch("/_editor/templates" + route)
       .then((res) => res.json())
       .then((res) => {
         if (res.rowid) {
@@ -35,12 +35,12 @@ const ItemSub = memo(({ route, expand }: ItemSubProp) => {
           setHasTemplate(false);
         }
       });
-    fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/entries" + route)
+    fetch("/_editor/entries" + route)
       .then((res) => res.json())
       .then((res) => setEntries(res));
   };
   const addTemplate = async () => {
-    await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/templates", {
+    await fetch("/_editor/templates", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -54,7 +54,7 @@ const ItemSub = memo(({ route, expand }: ItemSubProp) => {
     if (newEntryTitle.current?.innerHTML) {
       const title = newEntryTitle.current.innerHTML;
       const name = await generateEntryName(route, title);
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/entries", {
+      await fetch("/_editor/entries", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
