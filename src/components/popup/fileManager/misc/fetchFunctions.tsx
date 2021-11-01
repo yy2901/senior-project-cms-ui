@@ -20,18 +20,15 @@ const uploadGeneratedFile = async (
 ): Promise<string> => {
   const body = new FormData();
   body.set("file", file, fileName);
-  const res = await fetch(
-    process.env.REACT_APP_CMS_BACKEND + "/_editor/uploads/" + originalFile,
-    {
-      method: "POST",
-      body,
-    }
-  );
+  const res = await fetch("/_editor/uploads/" + originalFile, {
+    method: "POST",
+    body,
+  });
   return await res.text();
 };
 
 const updateMeta = async (rowid: number, newMeta: MetaWithRawDetail) => {
-  await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/FilesMeta", {
+  await fetch("/_editor/FilesMeta", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -44,9 +41,7 @@ const updateMeta = async (rowid: number, newMeta: MetaWithRawDetail) => {
 };
 
 const getAll = async (): Promise<Meta[]> => {
-  const res = await fetch(
-    process.env.REACT_APP_CMS_BACKEND + "/_editor/FilesMeta"
-  );
+  const res = await fetch("/_editor/FilesMeta");
   const metaWithRawDetails: MetaWithRawDetail[] = await res.json();
   const metas: Meta[] = metaWithRawDetails.map((rawMeta) => {
     let details = null;
@@ -64,7 +59,7 @@ const getAll = async (): Promise<Meta[]> => {
 };
 
 const deleteFile = async (id: number) => {
-  await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/uploads/" + id, {
+  await fetch("/_editor/uploads/" + id, {
     method: "DELETE",
   });
 };

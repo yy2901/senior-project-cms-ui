@@ -25,7 +25,7 @@ const Item = memo(({ rowid, route, refresh }: ItemProps) => {
     const newRoute =
       renamingValue && renamingValue.current && renamingValue.current.value;
     if (newRoute && newRoute.length > 0) {
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/api-routes", {
+      await fetch("/_editor/api-routes", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const Item = memo(({ rowid, route, refresh }: ItemProps) => {
     }
   };
   const deleteRoute = async () => {
-    await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/api-routes", {
+    await fetch("/_editor/api-routes", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

@@ -21,7 +21,7 @@ const Route = () => {
     (state: RootState) => state.rightPanelReducer.refresher
   );
   const refresh = () => {
-    fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/api-routes" + routeUrl)
+    fetch("/_editor/api-routes" + routeUrl)
       .then((res) => res.json())
       .then((res) => setData(res));
   };

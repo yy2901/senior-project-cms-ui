@@ -26,13 +26,13 @@ const TrashCan = memo(() => {
     (state) => state.rightPanelReducer.refresher
   );
   const refresh = () => {
-    fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/trash")
+    fetch("/_editor/trash")
       .then((res) => res.json())
       .then((res) => setData(res));
   };
   const recoverRoute = (id: number) => {
     return async () => {
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/api-routes", {
+      await fetch("/_editor/api-routes", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +50,7 @@ const TrashCan = memo(() => {
   };
   const deleteRoute = (id: number) => {
     return async () => {
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/api-routes", {
+      await fetch("/_editor/api-routes", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const TrashCan = memo(() => {
   };
   const deleteTemplate = (id: number) => {
     return async () => {
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/templates", {
+      await fetch("/_editor/templates", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +97,7 @@ const TrashCan = memo(() => {
   };
   const recoverEntry = (id: number) => {
     return async () => {
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/entries", {
+      await fetch("/_editor/entries", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const TrashCan = memo(() => {
   };
   const deleteEntry = (id: number) => {
     return async () => {
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/entries", {
+      await fetch("/_editor/entries", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

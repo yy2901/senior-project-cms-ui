@@ -22,9 +22,7 @@ const Template = () => {
     (state: RootState) => state.rightPanelReducer.refresher
   );
   const refresh = () => {
-    fetch(
-      process.env.REACT_APP_CMS_BACKEND + "/_editor/templates" + templateParent
-    )
+    fetch("/_editor/templates" + templateParent)
       .then((res) => res.json())
       .then((res) => {
         setData(res);
@@ -42,7 +40,7 @@ const Template = () => {
   };
   const deleteTemplate = async () => {
     if (data?.rowid) {
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/templates", {
+      await fetch("/_editor/templates", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +58,7 @@ const Template = () => {
   };
   const updateFields = async () => {
     if (data?.rowid) {
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/templates", {
+      await fetch("/_editor/templates", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

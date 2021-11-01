@@ -16,7 +16,7 @@ const AddItem = ({ refresh }: AddItemType) => {
     const newRoute = inputRoute.current?.value;
     if (newRoute && newRoute.length > 0) {
       const route = "/" + parseDashCase(newRoute);
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/api-routes", {
+      await fetch("/_editor/api-routes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -61,9 +61,7 @@ const FileGrid = () => {
             }}
             src={
               file.details && file.details.thumbnail
-                ? process.env.REACT_APP_CMS_BACKEND +
-                  "/uploads/" +
-                  file.details.thumbnail
+                ? "/uploads/" + file.details.thumbnail
                 : "/filePlaceholder.png"
             }
           ></img>
