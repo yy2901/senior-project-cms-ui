@@ -59,7 +59,7 @@ const optimizeImage = async (
   if (["jpg", "png", "webp"].indexOf(meta.extension.toLowerCase()) > -1) {
     const originalImage = new Image();
     originalImage.src =
-      process.env.REACT_APP_CMS_BACKEND + "/uploads/" + meta.fileName;
+      "/uploads/" + meta.fileName;
     originalImage.setAttribute("crossOrigin", "Anonymous");
     await imageLoaded(originalImage);
     detail.type = "image";

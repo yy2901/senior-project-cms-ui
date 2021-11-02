@@ -9,7 +9,6 @@ type EntryEditorProps = {
 };
 
 const EntryEditor = ({ template, data, setData }: EntryEditorProps) => {
-  console.log(data);
   return (
     <div>
       <FieldsParser data={data} setData={setData} fields={template.fields} />

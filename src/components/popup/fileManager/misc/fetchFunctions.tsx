@@ -4,7 +4,7 @@ const uploadFile = async (file: Blob | string): Promise<MetaWithRawDetail> => {
   const formData = new FormData();
   formData.set("file", file);
   const res = await fetch(
-    process.env.REACT_APP_CMS_BACKEND + "/_editor/uploads",
+    "/_editor/uploads",
     {
       method: "POST",
       body: formData,
