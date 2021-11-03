@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAll } from "./misc/fetchFunctions";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { Meta } from "./misc/types";
 import { select } from "../../../redux/fileManagerReducer";
 
-const FileGrid = () => {
+type Props = {
+  files: Meta[];
+  setFiles: (files: Meta[]) => void;
+};
+
+const FileGrid = ({ files, setFiles }: Props) => {
   const selected = useSelector(
     (state: RootState) => state.fileManagerReducer.selected
   );
@@ -13,7 +18,6 @@ const FileGrid = () => {
     (state: RootState) => state.fileManagerReducer.refresher
   );
   const dispatch = useDispatch<AppDispatch>();
-  const [files, setFiles] = useState<Meta[]>([]);
   const refresh = async () => {
     const result = await getAll();
     setFiles(result);
@@ -61,7 +65,7 @@ const FileGrid = () => {
             }}
             src={
               file.details && file.details.thumbnail
-                ? "/uploads/" + file.details.thumbnail
+                ? file.details.thumbnail
                 : "/filePlaceholder.png"
             }
           ></img>

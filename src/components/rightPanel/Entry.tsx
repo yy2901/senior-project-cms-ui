@@ -45,14 +45,22 @@ const Entry = memo(() => {
           const teaser = JSON.parse(res.teaser);
           if (teaser) {
             setTeaserData(teaser);
+          } else {
+            setTeaserData({});
           }
-        } catch {}
+        } catch {
+          setTeaserData({});
+        }
         try {
           const content = JSON.parse(res.content);
           if (content) {
             setContentData(content);
+          } else {
+            setContentData({});
           }
-        } catch {}
+        } catch {
+          setContentData({});
+        }
       });
   };
   const deleteEntry = async () => {

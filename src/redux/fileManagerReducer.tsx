@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Meta } from "../components/popup/fileManager/misc/types";
+import { FileFieldType } from "../components/rightPanel/editor/EntryEditor/FileInstance";
 
 interface fileManagerState {
   open: boolean;
   selected: number;
   isInserting: boolean;
   refresher: number;
-  selectedDetails: { [key: string]: any };
+  setFileField: (fileField: FileFieldType) => void;
 }
 
 const initialState = {
@@ -14,7 +14,7 @@ const initialState = {
   isInserting: false,
   refresher: 0,
   selected: -1,
-  selectedDetails: {},
+  setFileField: (fileField) => {},
 } as fileManagerState;
 
 const fileManagerSlice = createSlice({
@@ -23,9 +23,13 @@ const fileManagerSlice = createSlice({
   reducers: {
     toggleFileManager(state, action: PayloadAction<boolean>) {
       state.open = action.payload;
+      if (!action.payload) {
+        state.isInserting = false;
+        state.selected = -1;
+      }
     },
-    toggleIsInserting(state, action: PayloadAction<boolean>) {
-      state.isInserting = action.payload;
+    startInserting(state) {
+      state.isInserting = true;
     },
     select(state, action: PayloadAction<number>) {
       state.selected = action.payload;
@@ -33,17 +37,20 @@ const fileManagerSlice = createSlice({
     refresh(state) {
       state.refresher++;
     },
-    setCurrentDetails(state, action: PayloadAction<{ [key: string]: any }>) {
-      state.selectedDetails = action.payload;
+    setFileFieldSetter(
+      state,
+      action: PayloadAction<(fileField: FileFieldType) => void>
+    ) {
+      state.setFileField = action.payload;
     },
   },
 });
 
 export const {
   toggleFileManager,
-  toggleIsInserting,
+  startInserting,
   select,
   refresh,
-  setCurrentDetails,
+  setFileFieldSetter,
 } = fileManagerSlice.actions;
 export default fileManagerSlice.reducer;

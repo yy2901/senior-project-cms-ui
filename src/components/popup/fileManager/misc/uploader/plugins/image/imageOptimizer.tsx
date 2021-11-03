@@ -1,5 +1,5 @@
-import { updateMeta, uploadGeneratedFile } from "../../fetchFunctions";
-import { MetaWithRawDetail } from "../../types";
+import { updateMeta, uploadGeneratedFile } from "../../../fetchFunctions";
+import { MetaWithRawDetail } from "../../../types";
 
 const imageLoaded = (image: HTMLImageElement) => {
   return new Promise((res) => {
@@ -58,14 +58,12 @@ const optimizeImage = async (
 ) => {
   if (["jpg", "png", "webp"].indexOf(meta.extension.toLowerCase()) > -1) {
     const originalImage = new Image();
-    originalImage.src =
-      "/uploads/" + meta.fileName;
+    originalImage.src = "/uploads/" + meta.fileName;
     originalImage.setAttribute("crossOrigin", "Anonymous");
     await imageLoaded(originalImage);
     detail.type = "image";
     detail.width = originalImage.width;
     detail.height = originalImage.height;
-    detail.image = "/uploads/" + meta.fileName;
     const baseName = meta.fileName.slice(0, meta.fileName.lastIndexOf("."));
     const thumbnail = await compressThenUpload(
       originalImage,
@@ -74,7 +72,7 @@ const optimizeImage = async (
       baseName,
       meta.rowid
     );
-    detail.thumbnail = "/uploads/" + thumbnail ? thumbnail : meta.fileName;
+    detail.thumbnail = "/uploads/" + (thumbnail ? thumbnail : meta.fileName);
     const small = await compressThenUpload(
       originalImage,
       600,
@@ -82,7 +80,7 @@ const optimizeImage = async (
       baseName,
       meta.rowid
     );
-    detail.small = "/uploads/" + small ? small : meta.fileName;
+    detail.small = "/uploads/" + (small ? small : meta.fileName);
     const medium = await compressThenUpload(
       originalImage,
       1000,
@@ -97,8 +95,8 @@ const optimizeImage = async (
       baseName,
       meta.rowid
     );
-    detail.medium = "/uploads/" + medium ? medium : meta.fileName;
-    detail.large = "/uploads/" + large ? large : meta.fileName;
+    detail.medium = "/uploads/" + (medium ? medium : meta.fileName);
+    detail.large = "/uploads/" + (large ? large : meta.fileName);
   }
 };
 

@@ -1,15 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import Uploader from "./misc/uploader/Uploader";
-import {
-  refresh,
-  select,
-  toggleFileManager,
-} from "../../../redux/fileManagerReducer";
+import { refresh, toggleFileManager } from "../../../redux/fileManagerReducer";
 import { AppDispatch, RootState } from "../../../redux/store";
 import FileGrid from "./FileGrid";
 import { deleteFile } from "./misc/fetchFunctions";
+import { useState } from "react";
+import { Meta } from "./misc/types";
 
 const FileManager = () => {
+  const [files, setFiles] = useState<Meta[]>([]);
   const isOpen = useSelector(
     (state: RootState) => state.fileManagerReducer.open
   );
@@ -18,6 +17,9 @@ const FileManager = () => {
   );
   const isInserting = useSelector(
     (state: RootState) => state.fileManagerReducer.isInserting
+  );
+  const setFileField = useSelector(
+    (state: RootState) => state.fileManagerReducer.setFileField
   );
   const dispatch = useDispatch<AppDispatch>();
   const deleteSelected = async () => {
@@ -40,7 +42,6 @@ const FileManager = () => {
               <button
                 onClick={() => {
                   dispatch(toggleFileManager(false));
-                  dispatch(select(-1));
                 }}
               >
                 close
@@ -57,10 +58,24 @@ const FileManager = () => {
               <button onClick={deleteSelected}>delete Selected</button>
             </div>
           </div>
-          <FileGrid />
+          <FileGrid files={files} setFiles={setFiles} />
           {isInserting && (
             <div>
-              <button>Select</button>
+              <button
+                onClick={() => {
+                  dispatch(toggleFileManager(false));
+                  setFileField(
+                    files.find((file) => file.rowid === selected)?.details || {
+                      id: -1,
+                      url: "",
+                      thumbnail: "",
+                      type: "",
+                    }
+                  );
+                }}
+              >
+                Select
+              </button>
             </div>
           )}
         </div>

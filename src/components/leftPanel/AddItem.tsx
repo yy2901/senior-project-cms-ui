@@ -14,6 +14,10 @@ const AddItem = ({ refresh }: AddItemType) => {
   const dispatch = useDispatch<AppDispatch>();
   const createRoute = async () => {
     const newRoute = inputRoute.current?.value;
+    if (newRoute === "uploads" || newRoute === "dashboard") {
+      console.log("Illegal route name");
+      return;
+    }
     if (newRoute && newRoute.length > 0) {
       const route = "/" + parseDashCase(newRoute);
       await fetch("/_editor/api-routes", {

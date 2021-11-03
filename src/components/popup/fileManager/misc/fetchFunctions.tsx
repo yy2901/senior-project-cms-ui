@@ -3,13 +3,10 @@ import { Meta, MetaWithRawDetail } from "./types";
 const uploadFile = async (file: Blob | string): Promise<MetaWithRawDetail> => {
   const formData = new FormData();
   formData.set("file", file);
-  const res = await fetch(
-    "/_editor/uploads",
-    {
-      method: "POST",
-      body: formData,
-    }
-  );
+  const res = await fetch("/_editor/uploads", {
+    method: "POST",
+    body: formData,
+  });
   return await res.json();
 };
 
@@ -64,4 +61,26 @@ const deleteFile = async (id: number) => {
   });
 };
 
-export { uploadFile, updateMeta, uploadGeneratedFile, getAll, deleteFile };
+const getMeta = async (id: number) => {
+  const res = await fetch("/_editor/FilesMeta/" + id);
+  const metaWithRawDetail: MetaWithRawDetail = await res.json();
+  let details = null;
+  if (metaWithRawDetail.details) {
+    try {
+      details = JSON.parse(metaWithRawDetail.details);
+    } catch {}
+  }
+  return {
+    ...metaWithRawDetail,
+    details,
+  };
+};
+
+export {
+  uploadFile,
+  updateMeta,
+  uploadGeneratedFile,
+  getAll,
+  deleteFile,
+  getMeta,
+};

@@ -2,6 +2,7 @@ import { FieldType, FieldTypesType } from "../TemplateEditor/Field";
 import BooleanInstance from "./BooleanInstance";
 import ChoicesInstance from "./ChoicesInstance";
 import FieldsParser from "./FieldsParser";
+import FileInstance from "./FileInstance";
 import FlexibleInstance from "./FlexibleInstance";
 import NumberInstance from "./NumberInstance";
 import RepeatInstance from "./RepeatInstance";
@@ -65,6 +66,9 @@ const FieldParser = ({ field, data, setData }: FieldParserProps) => {
           setData={setData}
           flexibleModes={field.options.flexible}
         />
+      )}
+      {field.type === FieldTypesType.file && (
+        <FileInstance fileField={data?data:{id:-1,url:"",type:""}} setFileField={setData}/>
       )}
     </div>
   );

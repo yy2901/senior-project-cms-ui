@@ -1,3 +1,5 @@
+import { FileFieldType } from "../../../rightPanel/editor/EntryEditor/FileInstance";
+
 type MetaWithRawDetail = {
   rowid: number;
   size: number;
@@ -13,7 +15,7 @@ type Meta = {
   time: number;
   extension: string;
   fileName: string;
-  details: { thumbnail: string; type: string; [key: string]: any };
+  details: FileFieldType;
 };
 
 export type { MetaWithRawDetail, Meta };
