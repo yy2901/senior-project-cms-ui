@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Fields, { FieldsType } from "./Fields";
 
 export type TemplateType = {

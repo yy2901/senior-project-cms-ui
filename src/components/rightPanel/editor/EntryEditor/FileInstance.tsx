@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
+import { setFileFieldSetter } from "../../../../misc/fileFieldSetter";
 import {
   select,
   toggleFileManager,
   startInserting,
-  setFileFieldSetter,
 } from "../../../../redux/fileManagerReducer";
 import { AppDispatch } from "../../../../redux/store";
 

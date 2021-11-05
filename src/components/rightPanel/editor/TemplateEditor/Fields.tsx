@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import Field, { FieldType, FieldTypesType } from "./Field";
 
 export type FieldsType = FieldType[];

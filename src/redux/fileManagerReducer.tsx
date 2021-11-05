@@ -1,12 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { FileFieldType } from "../components/rightPanel/editor/EntryEditor/FileInstance";
 
 interface fileManagerState {
   open: boolean;
   selected: number;
   isInserting: boolean;
   refresher: number;
-  setFileField: (fileField: FileFieldType) => void;
 }
 
 const initialState = {
@@ -14,7 +12,6 @@ const initialState = {
   isInserting: false,
   refresher: 0,
   selected: -1,
-  setFileField: (fileField) => {},
 } as fileManagerState;
 
 const fileManagerSlice = createSlice({
@@ -37,20 +34,9 @@ const fileManagerSlice = createSlice({
     refresh(state) {
       state.refresher++;
     },
-    setFileFieldSetter(
-      state,
-      action: PayloadAction<(fileField: FileFieldType) => void>
-    ) {
-      state.setFileField = action.payload;
-    },
   },
 });
 
-export const {
-  toggleFileManager,
-  startInserting,
-  select,
-  refresh,
-  setFileFieldSetter,
-} = fileManagerSlice.actions;
+export const { toggleFileManager, startInserting, select, refresh } =
+  fileManagerSlice.actions;
 export default fileManagerSlice.reducer;

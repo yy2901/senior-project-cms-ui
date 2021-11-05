@@ -1,4 +1,3 @@
-import { FieldsType } from "../TemplateEditor/Fields";
 import { FlexibleType } from "../TemplateEditor/Flexible";
 import FieldsParser from "./FieldsParser";
 

@@ -72,7 +72,7 @@ const ItemSub = memo(({ route, expand }: ItemSubProp) => {
     if (expand) {
       refresh();
     }
-  }, [route, expand, refresher]);
+  }, [route, expand, refresher, refresh]);
   useEffect(() => {
     if (addingEntry) {
       newEntryTitle.current?.focus();

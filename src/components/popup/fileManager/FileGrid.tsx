@@ -37,6 +37,7 @@ const FileGrid = ({ files, setFiles }: Props) => {
             display: "inline-block",
             lineHeight: "0",
           }}
+          key={file.rowid}
           onClick={() => dispatch(select(file.rowid))}
         >
           <div

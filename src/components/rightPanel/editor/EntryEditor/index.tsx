@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { TemplateType } from "../TemplateEditor";
 import FieldsParser from "./FieldsParser";
 

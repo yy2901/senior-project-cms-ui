@@ -1,4 +1,4 @@
-import { updateMeta, uploadGeneratedFile } from "../../../fetchFunctions";
+import { uploadGeneratedFile } from "../../../fetchFunctions";
 import { MetaWithRawDetail } from "../../../types";
 
 const imageLoaded = (image: HTMLImageElement) => {

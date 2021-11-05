@@ -7,6 +7,7 @@ import FlexibleInstance from "./FlexibleInstance";
 import NumberInstance from "./NumberInstance";
 import RepeatInstance from "./RepeatInstance";
 import TextInstance from "./TextInstance";
+import WYSIWYGInstance from "./WYSIWYGInstance";
 
 type FieldParserProps = {
   field: FieldType;
@@ -68,7 +69,13 @@ const FieldParser = ({ field, data, setData }: FieldParserProps) => {
         />
       )}
       {field.type === FieldTypesType.file && (
-        <FileInstance fileField={data?data:{id:-1,url:"",type:""}} setFileField={setData}/>
+        <FileInstance
+          fileField={data ? data : { id: -1, url: "", type: "" }}
+          setFileField={setData}
+        />
+      )}
+      {field.type === FieldTypesType.wysiwyg && (
+        <WYSIWYGInstance data={data} setData={setData} />
       )}
     </div>
   );
