@@ -56,7 +56,9 @@ const optimizeImage = async (
   meta: MetaWithRawDetail,
   detail: { [key: string]: any }
 ) => {
-  if (["jpg", "png", "webp"].indexOf(meta.extension.toLowerCase()) > -1) {
+  if (
+    ["jpg", "png", "webp", "jpeg"].indexOf(meta.extension.toLowerCase()) > -1
+  ) {
     const originalImage = new Image();
     originalImage.src = "/uploads/" + meta.fileName;
     originalImage.setAttribute("crossOrigin", "Anonymous");

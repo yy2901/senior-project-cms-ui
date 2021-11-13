@@ -58,7 +58,7 @@ const FileManager = () => {
           </div>
           <FileGrid files={files} setFiles={setFiles} />
           {isInserting && (
-            <div>
+            <div style={{ padding: "10px" }}>
               <button
                 onClick={() => {
                   dispatch(toggleFileManager(false));

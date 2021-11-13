@@ -30,12 +30,10 @@ const FileGrid = ({ files, setFiles }: Props) => {
       {files.map((file) => (
         <div
           style={{
-            width: "calc(20% - 14.2px)",
-            paddingTop: "calc(20% - 14.2px)",
-            position: "relative",
+            width: "calc(20% - 14.5px)",
             margin: "5px",
             display: "inline-block",
-            lineHeight: "0",
+            verticalAlign: "top",
           }}
           key={file.rowid}
           onClick={() => dispatch(select(file.rowid))}
@@ -43,33 +41,47 @@ const FileGrid = ({ files, setFiles }: Props) => {
           <div
             style={{
               width: "100%",
-              height: "100%",
-              position: "absolute",
-              top: "-5px",
-              left: "-5px",
-              border: "5px solid red",
-              borderRadius: "5px",
-              opacity: file.rowid === selected ? "1" : "0",
-              transform: `scale(${file.rowid === selected ? "1" : "0.95"})`,
-              transition: "0.1s",
+              paddingTop: "100%",
+              position: "relative",
+              lineHeight: "0",
             }}
-          ></div>
-          <img
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              position: "absolute",
-              top: "0",
-              left: "0",
-              pointerEvents: "none",
-            }}
-            src={
-              file.details && file.details.thumbnail
-                ? file.details.thumbnail
-                : "/filePlaceholder.png"
-            }
-          ></img>
+            key={file.rowid}
+            onClick={() => dispatch(select(file.rowid))}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                position: "absolute",
+                top: "-5px",
+                left: "-5px",
+                border: "5px solid red",
+                borderRadius: "5px",
+                opacity: file.rowid === selected ? "1" : "0",
+                transform: `scale(${file.rowid === selected ? "1" : "0.95"})`,
+                transition: "0.1s",
+              }}
+            ></div>
+            <img
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                position: "absolute",
+                top: "0",
+                left: "0",
+                pointerEvents: "none",
+              }}
+              src={
+                file.details && file.details.thumbnail
+                  ? file.details.thumbnail
+                  : "/dashboard/filePlaceholder.png"
+              }
+            ></img>
+          </div>
+          <div style={{ wordBreak: "break-all", marginTop: "5px" }}>
+            {file.fileName}
+          </div>
         </div>
       ))}
     </div>
