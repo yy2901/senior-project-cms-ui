@@ -1,5 +1,5 @@
 import { uploadGeneratedFile } from "../../../fetchFunctions";
-import { MetaWithRawDetail } from "../../../types";
+import { Meta } from "../../../types";
 
 const imageLoaded = (image: HTMLImageElement) => {
   return new Promise((res) => {
@@ -52,10 +52,7 @@ const compressThenUpload = async (
   return generatedFileUrl;
 };
 
-const optimizeImage = async (
-  meta: MetaWithRawDetail,
-  detail: { [key: string]: any }
-) => {
+const optimizeImage = async (meta: Meta, detail: { [key: string]: any }) => {
   if (
     ["jpg", "png", "webp", "jpeg"].indexOf(meta.extension.toLowerCase()) > -1
   ) {

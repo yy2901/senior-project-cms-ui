@@ -1,10 +1,7 @@
-import { MetaWithRawDetail } from "../../../types";
+import { Meta } from "../../../types";
 import { uploadGeneratedFile } from "../../../fetchFunctions";
 
-const optimizeVideo = async (
-  meta: MetaWithRawDetail,
-  detail: { [key: string]: any }
-) => {
+const optimizeVideo = async (meta: Meta, detail: { [key: string]: any }) => {
   if (["mp4"].indexOf(meta.extension.toLowerCase()) > -1) {
     const baseName = meta.fileName.slice(0, meta.fileName.lastIndexOf("."));
     const video = document.createElement("video");

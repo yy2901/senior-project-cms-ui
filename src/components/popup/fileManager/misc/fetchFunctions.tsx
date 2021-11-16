@@ -1,6 +1,6 @@
-import { Meta, MetaWithRawDetail } from "./types";
+import { Meta } from "./types";
 
-const uploadFile = async (file: Blob | string): Promise<MetaWithRawDetail> => {
+const uploadFile = async (file: Blob | string): Promise<Meta> => {
   const formData = new FormData();
   formData.set("file", file);
   const res = await fetch("/_editor/uploads", {
@@ -24,7 +24,7 @@ const uploadGeneratedFile = async (
   return await res.text();
 };
 
-const updateMeta = async (rowid: number, newMeta: MetaWithRawDetail) => {
+const updateMeta = async (rowid: number, newMeta: Meta) => {
   await fetch("/_editor/FilesMeta", {
     method: "PUT",
     headers: {
@@ -39,19 +39,7 @@ const updateMeta = async (rowid: number, newMeta: MetaWithRawDetail) => {
 
 const getAll = async (): Promise<Meta[]> => {
   const res = await fetch("/_editor/FilesMeta");
-  const metaWithRawDetails: MetaWithRawDetail[] = await res.json();
-  const metas: Meta[] = metaWithRawDetails.map((rawMeta) => {
-    let details = null;
-    if (rawMeta.details) {
-      try {
-        details = JSON.parse(rawMeta.details);
-      } catch {}
-    }
-    return {
-      ...rawMeta,
-      details,
-    };
-  });
+  const metas: Meta[] = await res.json();
   return metas;
 };
 
@@ -63,17 +51,8 @@ const deleteFile = async (id: number) => {
 
 const getMeta = async (id: number) => {
   const res = await fetch("/_editor/FilesMeta/" + id);
-  const metaWithRawDetail: MetaWithRawDetail = await res.json();
-  let details = null;
-  if (metaWithRawDetail.details) {
-    try {
-      details = JSON.parse(metaWithRawDetail.details);
-    } catch {}
-  }
-  return {
-    ...metaWithRawDetail,
-    details,
-  };
+  const meta: Meta = await res.json();
+  return meta;
 };
 
 export {

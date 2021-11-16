@@ -27,11 +27,11 @@ const Template = () => {
       .then((res) => {
         setData(res);
         try {
-          const fields = JSON.parse(res.fields);
+          const fields = res.fields;
           if (fields.fields) {
             setContentFields(fields);
           }
-          const teaser = JSON.parse(res.teaser);
+          const teaser = res.teaser;
           if (teaser.fields) {
             setTeaserFields(teaser);
           }
@@ -66,8 +66,8 @@ const Template = () => {
         body: JSON.stringify({
           rowid: data.rowid,
           template: {
-            teaser: JSON.stringify(teaserFields),
-            fields: JSON.stringify(contentFields),
+            teaser: teaserFields,
+            fields: contentFields,
           },
         }),
       });

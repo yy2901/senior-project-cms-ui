@@ -14,8 +14,8 @@ type EntryData = {
   name: string;
   slug: string;
   time: number;
-  content: string;
-  teaser: string;
+  content: EntryContentType;
+  teaser: EntryContentType;
 };
 
 type EntryContentType = {
@@ -42,7 +42,7 @@ const Entry = memo(() => {
       .then((res: EntryData) => {
         setData(res);
         try {
-          const teaser = JSON.parse(res.teaser);
+          const teaser = res.teaser;
           if (teaser) {
             setTeaserData(teaser);
           } else {
@@ -52,7 +52,7 @@ const Entry = memo(() => {
           setTeaserData({});
         }
         try {
-          const content = JSON.parse(res.content);
+          const content = res.content;
           if (content) {
             setContentData(content);
           } else {
@@ -92,8 +92,8 @@ const Entry = memo(() => {
           rowid: data.rowid,
           entry: {
             ...data,
-            teaser: JSON.stringify(teaserData),
-            content: JSON.stringify(contentData),
+            teaser: teaserData,
+            content: contentData,
           },
         }),
       });
@@ -108,13 +108,13 @@ const Entry = memo(() => {
         .then((res) => res.json())
         .then((res) => {
           try {
-            const content = JSON.parse(res.fields);
+            const content = res.fields;
             if (content.fields) {
               setContentTemplate(content);
             }
           } catch {}
           try {
-            const teaser = JSON.parse(res.teaser);
+            const teaser = res.teaser;
             if (teaser) {
               setTeaserTemplate(teaser);
             }
