@@ -81,9 +81,9 @@ const Entry = memo(() => {
       dispatch(refreshLeftPanel());
     }
   };
-  const updateEntry = () => {
+  const updateEntry = async () => {
     if (data) {
-      fetch("/_editor/entries", {
+      await fetch("/_editor/entries", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -97,6 +97,7 @@ const Entry = memo(() => {
           },
         }),
       });
+      dispatch(refreshLeftPanel());
     }
   };
   useEffect(() => {

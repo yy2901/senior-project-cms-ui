@@ -1,3 +1,4 @@
+import { moveBlock } from "../../../../helpers/moveBlock";
 import { FlexibleType } from "../TemplateEditor/Flexible";
 import FieldsParser from "./FieldsParser";
 
@@ -44,6 +45,8 @@ const FlexibleInstance = ({
           key={item.type + i}
           flexibleModes={flexibleModes}
           deleteItem={deleteItem(i)}
+          moveup={moveBlock(i, "up", data, setData)}
+          movedown={moveBlock(i, "down", data, setData)}
         />
       ))}
       <button
@@ -62,6 +65,8 @@ type FlexibleItemProps = {
   setData: (data: FlexibleInstanceItemDataType) => void;
   flexibleModes: FlexibleType;
   deleteItem: () => void;
+  moveup: () => void;
+  movedown: () => void;
 };
 
 const FlexibleItem = ({
@@ -69,6 +74,8 @@ const FlexibleItem = ({
   setData,
   flexibleModes,
   deleteItem,
+  moveup,
+  movedown,
 }: FlexibleItemProps) => {
   const setField = (fields: FlexibleInstanceItemFlieldsDataType) => {
     const newData = { ...data };
@@ -77,6 +84,11 @@ const FlexibleItem = ({
   };
   return (
     <div style={{ display: "flex" }}>
+      <div>
+        <button onClick={moveup}>up</button>
+        <br></br>
+        <button onClick={movedown}>down</button>
+      </div>
       <div>
         {flexibleModes.map((mode, i) => (
           <button

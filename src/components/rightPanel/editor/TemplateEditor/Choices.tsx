@@ -23,6 +23,7 @@ const Choices = ({ choices, setChoices }: ChoicesProps) => {
             <b>Type in items, seperated by return</b>
           </div>
           <textarea
+            defaultValue={choicesString}
             onChange={(e) => {
               setChoicesString(e.target.value);
             }}
@@ -43,7 +44,12 @@ const Choices = ({ choices, setChoices }: ChoicesProps) => {
         <>
           <button
             style={{ textAlign: "left" }}
-            onClick={() => setEditing(true)}
+            onClick={() => {
+              setEditing(true);
+              if (choices) {
+                setChoicesString(choices.map((choice) => choice).join("\n"));
+              }
+            }}
           >
             {choices && choices.length > 0
               ? choices.map((choice, i) => (

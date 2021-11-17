@@ -4,7 +4,7 @@ import Repeat, { RepeatType } from "./Repeat";
 import BooleanField, { BooleanFieldType } from "./BooleanField";
 import Choices, { ChoicesType } from "./Choices";
 import Flexible, { FlexibleType } from "./Flexible";
-import Fields, { FieldsType } from "./Fields";
+import Fields, { DnDParamsType, FieldsType } from "./Fields";
 
 export enum FieldTypesType {
   text = "text",
@@ -38,9 +38,17 @@ type FieldComponentType = {
   field: FieldType;
   setField: (newField: FieldType) => void;
   deleteField: (id: number) => void;
+  moveup: () => void;
+  movedown: () => void;
 };
 
-const Field = ({ field, setField, deleteField }: FieldComponentType) => {
+const Field = ({
+  field,
+  setField,
+  deleteField,
+  moveup,
+  movedown,
+}: FieldComponentType) => {
   const setRepeat = (newRepeat: RepeatType) => {
     const newField = { ...field };
     newField.options.repeat = newRepeat;
@@ -112,6 +120,10 @@ const Field = ({ field, setField, deleteField }: FieldComponentType) => {
           justifyContent: "space-between",
         }}
       >
+        <div>
+          <button onClick={moveup}>up</button>
+          <button onClick={movedown}>down</button>
+        </div>
         <div>
           {currentInput === 1 ? (
             <>

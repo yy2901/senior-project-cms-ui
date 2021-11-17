@@ -1,3 +1,4 @@
+import { moveBlock } from "../../../../helpers/moveBlock";
 import { RepeatType } from "../TemplateEditor/Repeat";
 import FieldsParser from "./FieldsParser";
 
@@ -26,6 +27,10 @@ const RepeatInstance = ({ data, setData, fields }: RepeatInstanceProps) => {
     <div>
       {data.map((item, i) => (
         <div style={{ display: "flex" }} key={i}>
+          <div>
+            <button onClick={moveBlock(i, "up", data, setData)}>up</button>
+            <button onClick={moveBlock(i, "down", data, setData)}>down</button>
+          </div>
           <FieldsParser
             data={item}
             setData={setItemData(i)}

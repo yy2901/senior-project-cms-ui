@@ -1,6 +1,13 @@
+import { moveBlock } from "../../../../helpers/moveBlock";
 import Field, { FieldType, FieldTypesType } from "./Field";
 
 export type FieldsType = FieldType[];
+
+export type DnDParamsType = {
+  isSorting: boolean;
+  currentlyMoving: number;
+  newOrder: number;
+};
 
 type FieldsComponentType = {
   fields: FieldsType;
@@ -50,12 +57,14 @@ const Fields = ({ fields, setFields }: FieldsComponentType) => {
         border: "1px solid black",
       }}
     >
-      {fields.map((field) => (
+      {fields.map((field, i) => (
         <Field
           field={field}
           key={field.id}
           setField={setField}
           deleteField={deleteField}
+          moveup={moveBlock(i, "up", fields, setFields)}
+          movedown={moveBlock(i, "down", fields, setFields)}
         />
       ))}
       <button
