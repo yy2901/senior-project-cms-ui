@@ -28,8 +28,9 @@ const BlockStyleToolbar = ({ editorState, setEditorState }: Props) => {
       .getType() === blockStyle;
   return (
     <>
-      {BLOCK_TYPES.map((type) => (
+      {BLOCK_TYPES.map((type, i) => (
         <button
+          key={type.label + i}
           style={{ color: isBlock(type.style) ? "red" : "black" }}
           onClick={(e) => {
             toggle(type.style);

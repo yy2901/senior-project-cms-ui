@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuid } from "uuid";
 import { refreshLeftPanel } from "../../redux/leftPanelReducer";
 import { RightPanelModal, setModal } from "../../redux/rightPanelReducer";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -12,12 +13,11 @@ type TemplateDataType = {
   teaser: string;
 };
 
-const Template = () => {
+const Template = ({ templateParent }: { templateParent: string | null }) => {
+  const mounted = useRef(true);
   const [data, setData] = useState<TemplateDataType>();
   const dispatch = useDispatch<AppDispatch>();
-  const templateParent = useSelector(
-    (state: RootState) => state.rightPanelReducer.templateParent
-  );
+
   const refresher = useSelector(
     (state: RootState) => state.rightPanelReducer.refresher
   );
@@ -25,8 +25,8 @@ const Template = () => {
     fetch("/_editor/templates" + templateParent)
       .then((res) => res.json())
       .then((res) => {
-        setData(res);
-        try {
+        if (mounted.current) {
+          setData(res);
           const fields = res.fields;
           if (fields.fields) {
             setContentFields(fields);
@@ -35,7 +35,7 @@ const Template = () => {
           if (teaser.fields) {
             setTeaserFields(teaser);
           }
-        } catch {}
+        }
       });
   };
   const deleteTemplate = async () => {
@@ -52,8 +52,10 @@ const Template = () => {
           },
         }),
       });
-      dispatch(setModal(RightPanelModal.TRASHCAN));
-      dispatch(refreshLeftPanel());
+      if (mounted.current) {
+        dispatch(setModal(RightPanelModal.TRASHCAN));
+        dispatch(refreshLeftPanel());
+      }
     }
   };
   const updateFields = async () => {
@@ -83,6 +85,11 @@ const Template = () => {
   useEffect(() => {
     refresh();
   }, [refresher, templateParent]);
+  useEffect(() => {
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   return (
     <div>
       <button onClick={deleteTemplate}>delete template</button>
@@ -98,4 +105,15 @@ const Template = () => {
   );
 };
 
-export default Template;
+const TemplateWrapper = () => {
+  const templateParent = useSelector(
+    (state: RootState) => state.rightPanelReducer.templateParent
+  );
+  const [id, setId] = useState(uuid());
+  useEffect(() => {
+    setId(uuid());
+  }, [templateParent]);
+  return <Template templateParent={templateParent} key={id} />;
+};
+
+export default TemplateWrapper;

@@ -1,15 +1,24 @@
-import { Editor, RichUtils, EditorState } from "draft-js";
-import { useState } from "react";
+import {
+  Editor,
+  RichUtils,
+  EditorState,
+  convertToRaw,
+  RawDraftContentState,
+  convertFromRaw,
+} from "draft-js";
+import { useEffect, useState } from "react";
 import BlockStyleToolbar from "./WYSIWYGHelpers/BlockStyleToolbar";
 
 type Props = {
-  data: any;
-  setData: (data: any) => void;
+  data: RawDraftContentState | null;
+  setData: (data: RawDraftContentState) => void;
 };
 
 const WYSIWYGInstance = ({ data, setData }: Props) => {
   const [editorState, setEditorState] = useState<EditorState>(
-    EditorState.createEmpty()
+    data
+      ? EditorState.createWithContent(convertFromRaw(data))
+      : EditorState.createEmpty()
   );
   const isStyle = (style: string) => {
     return editorState.getCurrentInlineStyle().has(style);
@@ -17,6 +26,9 @@ const WYSIWYGInstance = ({ data, setData }: Props) => {
   const toggleStyle = (style: string) => {
     setEditorState(RichUtils.toggleInlineStyle(editorState, style));
   };
+  useEffect(() => {
+    setData(convertToRaw(editorState.getCurrentContent()));
+  }, [editorState]);
   return (
     <div>
       <button

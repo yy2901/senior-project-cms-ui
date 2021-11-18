@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export enum RightPanelModal {
   TRASHCAN,
-  MEDIA,
   TEMPLATE,
   ROUTE,
   ENTRY,

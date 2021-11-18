@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshLeftPanel } from "../../redux/leftPanelReducer";
 import { RightPanelModal, setModal } from "../../redux/rightPanelReducer";
@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from "../../redux/store";
 import dateParser from "../../helpers/dateParser";
 import EntryEditor from "./editor/EntryEditor";
 import { TemplateType } from "./editor/TemplateEditor";
+import { v4 as uuid } from "uuid";
 
 type EntryData = {
   title: string;
@@ -22,10 +23,15 @@ type EntryContentType = {
   [key: string]: any;
 };
 
-const Entry = memo(() => {
+type EntryProp = {
+  entrySlug: string | null;
+};
+
+const Entry = memo(({ entrySlug }: EntryProp) => {
+  const mounted = useRef(true);
   const dispatch = useDispatch<AppDispatch>();
-  const { entrySlug, refresher } = useSelector(
-    (state: RootState) => state.rightPanelReducer
+  const refresher = useSelector(
+    (state: RootState) => state.rightPanelReducer.refresher
   );
   const [data, setData] = useState<EntryData>();
   const [contentTemplate, setContentTemplate] = useState<TemplateType>({
@@ -40,26 +46,20 @@ const Entry = memo(() => {
     fetch("/_editor/entries" + entrySlug)
       .then((res) => res.json())
       .then((res: EntryData) => {
-        setData(res);
-        try {
+        if (mounted.current) {
+          setData(res);
           const teaser = res.teaser;
           if (teaser) {
             setTeaserData(teaser);
           } else {
             setTeaserData({});
           }
-        } catch {
-          setTeaserData({});
-        }
-        try {
           const content = res.content;
           if (content) {
             setContentData(content);
           } else {
             setContentData({});
           }
-        } catch {
-          setContentData({});
         }
       });
   };
@@ -77,8 +77,10 @@ const Entry = memo(() => {
           },
         }),
       });
-      dispatch(setModal(RightPanelModal.TRASHCAN));
-      dispatch(refreshLeftPanel());
+      if (mounted.current) {
+        dispatch(setModal(RightPanelModal.TRASHCAN));
+        dispatch(refreshLeftPanel());
+      }
     }
   };
   const updateEntry = async () => {
@@ -97,7 +99,9 @@ const Entry = memo(() => {
           },
         }),
       });
-      dispatch(refreshLeftPanel());
+      if (mounted.current) {
+        dispatch(refreshLeftPanel());
+      }
     }
   };
   useEffect(() => {
@@ -123,6 +127,11 @@ const Entry = memo(() => {
         });
     }
   }, [data]);
+  useEffect(() => {
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   return (
     <div>
       <button onClick={deleteEntry}>delete entry</button>
@@ -149,4 +158,15 @@ const Entry = memo(() => {
   );
 });
 
-export default Entry;
+const EntryWrapper = () => {
+  const entrySlug = useSelector(
+    (state: RootState) => state.rightPanelReducer.entrySlug
+  );
+  const [id, setId] = useState(uuid());
+  useEffect(() => {
+    setId(uuid());
+  }, [entrySlug]);
+  return <Entry entrySlug={entrySlug} key={id} />;
+};
+
+export default EntryWrapper;

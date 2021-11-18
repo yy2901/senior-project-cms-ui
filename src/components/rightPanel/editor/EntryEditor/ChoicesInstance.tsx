@@ -1,4 +1,5 @@
 import { ChoicesType } from "../TemplateEditor/Choices";
+import DOMPurity from "dompurify";
 
 export type ChoicesValueType = number;
 
@@ -13,12 +14,13 @@ const ChoicesInstance = ({ template, data, setData }: ChoicesInstanceProps) => {
     <span>
       {template.map((option, i) => (
         <button
-          key={option + i}
-          style={{ color: data === option ? "red" : "black" }}
-          onClick={() => setData(option)}
-        >
-          {option}
-        </button>
+          key={option.name + i}
+          disabled={data === option.name}
+          onClick={() => setData(option.name)}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurity.sanitize(option.display),
+          }}
+        ></button>
       ))}
     </span>
   );
