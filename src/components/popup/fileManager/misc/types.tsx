@@ -1,4 +1,4 @@
-import { FileFieldType } from "../../../rightPanel/editor/EntryEditor/FileInstance";
+import { FileInstanceType } from "../../../rightPanel/editor/EntryEditor/FileInstance";
 
 type Meta = {
   rowid: number;
@@ -6,7 +6,7 @@ type Meta = {
   time: number;
   extension: string;
   fileName: string;
-  details: FileFieldType;
+  details: FileInstanceType;
 };
 
 export type { Meta };

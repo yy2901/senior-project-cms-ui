@@ -25,12 +25,9 @@ const optimizeVideo = async (meta: Meta, detail: { [key: string]: any }) => {
     }
     canvas.height = video.videoHeight * scale;
     canvas.width = video.videoWidth * scale;
-    console.log(scale);
     canvas
       .getContext("2d")
       ?.drawImage(video, 0, 0, canvas.width, canvas.height);
-    document.body.append(video);
-    document.body.append(canvas);
     const convertThenUpload = async () => {
       return new Promise<string | null>((res) => {
         canvas.toBlob(async (blob) => {
@@ -49,7 +46,33 @@ const optimizeVideo = async (meta: Meta, detail: { [key: string]: any }) => {
       });
     };
     const generatedFileUrl = await convertThenUpload();
+    canvas.height = video.videoHeight;
+    canvas.width = video.videoWidth;
+    canvas
+      .getContext("2d")
+      ?.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const convertThenUploadCover = async () => {
+      return new Promise<string | null>((res) => {
+        canvas.toBlob(async (blob) => {
+          if (blob) {
+            console.log(URL.createObjectURL(blob));
+            const url = await uploadGeneratedFile(
+              meta.rowid,
+              blob,
+              baseName + "_cover.jpg"
+            );
+            res(url);
+          } else {
+            res(null);
+          }
+        }, "image/jpeg");
+      });
+    };
+    const generatedFileUrlCover = await convertThenUploadCover();
     generatedFileUrl && (detail.thumbnail = "/uploads/" + generatedFileUrl);
+    generatedFileUrl && (detail.cover = "/uploads/" + generatedFileUrlCover);
+    detail.width = video.videoWidth;
+    detail.height = video.videoHeight;
     canvas.remove();
     video.remove();
   }

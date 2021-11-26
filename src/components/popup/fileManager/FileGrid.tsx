@@ -17,6 +17,12 @@ const FileGrid = ({ files, setFiles }: Props) => {
   const refresher = useSelector(
     (state: RootState) => state.fileManagerReducer.refresher
   );
+  const insertingFilter = useSelector(
+    (state: RootState) => state.fileManagerReducer.insertingFilter
+  );
+  const isInserting = useSelector(
+    (state: RootState) => state.fileManagerReducer.isInserting
+  );
   const dispatch = useDispatch<AppDispatch>();
   const refresh = async () => {
     const result = await getAll();
@@ -25,12 +31,18 @@ const FileGrid = ({ files, setFiles }: Props) => {
   useEffect(() => {
     refresh();
   }, [refresher]);
+  const filteredFiles = isInserting
+    ? insertingFilter.length > 0
+      ? files.filter((f) => insertingFilter.includes(f.extension.toLowerCase()))
+      : files
+    : files;
   return (
     <div className="fileManager__fileGrid">
-      {files.map((file) => (
+      {filteredFiles.map((file) => (
         <div
           style={{
             width: "calc(20% - 14.5px)",
+            maxWidth: "150px",
             margin: "5px",
             display: "inline-block",
             verticalAlign: "top",

@@ -1,3 +1,4 @@
+import { sanitize } from "dompurify";
 import { useState } from "react";
 import Fields, { FieldsType } from "./Fields";
 
@@ -5,6 +6,7 @@ type ModeType = {
   id: number;
   name: string;
   fields: FieldsType;
+  display: string;
 };
 
 export type FlexibleType = ModeType[];
@@ -47,7 +49,12 @@ const Flexible = ({ flexible, setFlexible }: FlexibleProps) => {
           onClick={() => {
             setFlexible([
               ...flexible,
-              { id: currentId, name: "new mode", fields: [] },
+              {
+                id: currentId,
+                name: "new mode",
+                fields: [],
+                display: "new mode",
+              },
             ]);
           }}
         >
@@ -77,6 +84,12 @@ const Mode = ({ mode, setMode, deleteMode }: ModeProps) => {
     newMode.name = newName;
     setMode(newMode);
   };
+  const setModeDisplay = (newDisplay: string) => {
+    const newMode = { ...mode };
+    newMode.display = sanitize(newDisplay);
+    setMode(newMode);
+  };
+  const [modeDisplayInput, setModeDisplayInput] = useState(mode.display);
   return (
     <div
       style={{
@@ -94,9 +107,14 @@ const Mode = ({ mode, setMode, deleteMode }: ModeProps) => {
               onChange={(e) => setModeInputName(e.target.value)}
               defaultValue={mode.name}
             ></input>
+            <textarea
+              onChange={(e) => setModeDisplayInput(e.target.value)}
+              defaultValue={mode.display}
+            ></textarea>
             <button
               onClick={() => {
                 setModeName(modeInputName);
+                setModeDisplay(modeDisplayInput);
                 setEditing(false);
               }}
             >
@@ -105,7 +123,12 @@ const Mode = ({ mode, setMode, deleteMode }: ModeProps) => {
             <button onClick={() => setEditing(false)}>N</button>
           </>
         ) : (
-          <button onClick={() => setEditing(true)}>{mode.name}</button>
+          <>
+            <button onClick={() => setEditing(true)}>{mode.name}</button>
+            <button
+              dangerouslySetInnerHTML={{ __html: sanitize(mode.display) }}
+            />
+          </>
         )}
       </div>
       <div style={{ width: "100%", flexGrow: 1 }}>

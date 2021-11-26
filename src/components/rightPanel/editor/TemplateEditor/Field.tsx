@@ -5,6 +5,8 @@ import BooleanField, { BooleanFieldType } from "./BooleanField";
 import Choices, { ChoicesType } from "./Choices";
 import Flexible, { FlexibleType } from "./Flexible";
 import Fields, { DnDParamsType, FieldsType } from "./Fields";
+import FileField, { FileFieldType } from "./FileField";
+import WYSIWYGTemplate, { WYSIWYGCustomStyleTypes } from "./WYSIWYG";
 
 export enum FieldTypesType {
   text = "text",
@@ -24,6 +26,8 @@ type OptionsType = {
   flexible?: FlexibleType;
   booleanField?: BooleanFieldType;
   group?: FieldsType;
+  file?: FileFieldType;
+  wysiwygCustomStyles?: WYSIWYGCustomStyleTypes;
 };
 
 export type FieldType = {
@@ -72,6 +76,16 @@ const Field = ({
   const setFlexible = (newFlexible: FlexibleType) => {
     const newField = { ...field };
     newField.options.flexible = newFlexible;
+    setField(newField);
+  };
+  const setFileField = (newFileField: FileFieldType) => {
+    const newField = { ...field };
+    newField.options.file = newFileField;
+    setField(newField);
+  };
+  const setWysiwygField = (newWysiwygField: WYSIWYGCustomStyleTypes) => {
+    const newField = { ...field };
+    newField.options.wysiwygCustomStyles = newWysiwygField;
     setField(newField);
   };
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -216,6 +230,30 @@ const Field = ({
             <Flexible
               flexible={field.options.flexible ? field.options.flexible : []}
               setFlexible={setFlexible}
+            />
+          </div>
+        )}
+        {field.type === FieldTypesType.file && (
+          <div style={{ marginTop: "10px" }}>
+            <FileField
+              data={field.options.file ? field.options.file : { filters: [] }}
+              setData={setFileField}
+            />
+          </div>
+        )}
+        {field.type === FieldTypesType.wysiwyg && (
+          <div style={{ marginTop: "10px" }}>
+            <WYSIWYGTemplate
+              data={
+                field.options.wysiwygCustomStyles
+                  ? field.options.wysiwygCustomStyles
+                  : {
+                      customLinkStyle: {},
+                      customBlockStyle: [],
+                      customInlineStyle: [],
+                    }
+              }
+              setData={setWysiwygField}
             />
           </div>
         )}

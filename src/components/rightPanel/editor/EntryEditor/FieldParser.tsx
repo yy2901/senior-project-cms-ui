@@ -72,10 +72,17 @@ const FieldParser = ({ field, data, setData }: FieldParserProps) => {
         <FileInstance
           fileField={data ? data : { id: -1, url: "", type: "" }}
           setFileField={setData}
+          fileOptions={
+            field.options.file ? field.options.file : { filters: [] }
+          }
         />
       )}
       {field.type === FieldTypesType.wysiwyg && (
-        <WYSIWYGInstance data={data} setData={setData} />
+        <WYSIWYGInstance
+          data={data}
+          setData={setData}
+          options={field.options.wysiwygCustomStyles}
+        />
       )}
     </div>
   );

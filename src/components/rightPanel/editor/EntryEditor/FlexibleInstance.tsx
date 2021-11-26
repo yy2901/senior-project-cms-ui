@@ -1,3 +1,4 @@
+import { sanitize } from "dompurify";
 import { moveBlock } from "../../../../helpers/moveBlock";
 import { FlexibleType } from "../TemplateEditor/Flexible";
 import FieldsParser from "./FieldsParser";
@@ -94,10 +95,9 @@ const FlexibleItem = ({
           <button
             key={mode.name + i}
             onClick={() => setData({ ...data, type: mode.name })}
-            style={{ color: mode.name === data.type ? "red" : "black" }}
-          >
-            {mode.name}
-          </button>
+            disabled={mode.name === data.type}
+            dangerouslySetInnerHTML={{ __html: sanitize(mode.display) }}
+          ></button>
         ))}
       </div>
       <FieldsParser

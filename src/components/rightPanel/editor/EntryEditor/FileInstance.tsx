@@ -6,13 +6,15 @@ import {
   startInserting,
 } from "../../../../redux/fileManagerReducer";
 import { AppDispatch } from "../../../../redux/store";
+import { FileFieldType } from "../TemplateEditor/FileField";
 
 type FileInstancePropType = {
-  fileField: FileFieldType;
-  setFileField: (data: FileFieldType) => void;
+  fileField: FileInstanceType;
+  setFileField: (data: FileInstanceType) => void;
+  fileOptions: FileFieldType;
 };
 
-export type FileFieldType = {
+export type FileInstanceType = {
   id: number;
   url: string;
   type: string;
@@ -20,12 +22,16 @@ export type FileFieldType = {
   [key: string]: any;
 };
 
-const FileInstance = ({ fileField, setFileField }: FileInstancePropType) => {
+const FileInstance = ({
+  fileField,
+  setFileField,
+  fileOptions,
+}: FileInstancePropType) => {
   const dispatch = useDispatch<AppDispatch>();
   const selectFile = () => {
     dispatch(select(fileField.id));
     dispatch(toggleFileManager(true));
-    dispatch(startInserting());
+    dispatch(startInserting(fileOptions.filters));
     setFileFieldSetter(setFileField);
   };
   const clearField = () => {

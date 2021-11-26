@@ -5,6 +5,7 @@ interface fileManagerState {
   selected: number;
   isInserting: boolean;
   refresher: number;
+  insertingFilter: string[];
 }
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   isInserting: false,
   refresher: 0,
   selected: -1,
+  insertingFilter: [],
 } as fileManagerState;
 
 const fileManagerSlice = createSlice({
@@ -25,8 +27,9 @@ const fileManagerSlice = createSlice({
         state.selected = -1;
       }
     },
-    startInserting(state) {
+    startInserting(state, action: PayloadAction<string[]>) {
       state.isInserting = true;
+      state.insertingFilter = action.payload;
     },
     select(state, action: PayloadAction<number>) {
       state.selected = action.payload;
