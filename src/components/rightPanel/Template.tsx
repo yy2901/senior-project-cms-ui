@@ -27,12 +27,12 @@ const Template = ({ templateParent }: { templateParent: string | null }) => {
       .then((res) => {
         if (mounted.current) {
           setData(res);
-          const fields = res.fields;
-          if (fields.fields) {
-            setContentFields(fields);
+          const content = res.content;
+          if (content && content.fields) {
+            setContentFields(content);
           }
           const teaser = res.teaser;
-          if (teaser.fields) {
+          if (teaser && teaser.fields) {
             setTeaserFields(teaser);
           }
         }

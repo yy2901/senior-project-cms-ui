@@ -33,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build-to-backend-repo": "react-scripts build && mv build ../senior-project-cms-backend/public"
+    "build-to-backend-repo": "react-scripts build && cp -R build/* ../senior-project-cms-backend/public"
   },
   "eslintConfig": {
     "extends": [

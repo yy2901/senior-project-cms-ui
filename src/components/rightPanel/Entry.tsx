@@ -113,7 +113,7 @@ const Entry = memo(({ entrySlug }: EntryProp) => {
         .then((res) => res.json())
         .then((res) => {
           try {
-            const content = res.fields;
+            const content = res.content;
             if (content.fields) {
               setContentTemplate(content);
             }
