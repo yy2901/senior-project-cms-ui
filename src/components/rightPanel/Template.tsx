@@ -9,7 +9,7 @@ import TemplateEditor, { TemplateType } from "./editor/TemplateEditor";
 type TemplateDataType = {
   rowid: number;
   parent: string;
-  fields: string;
+  content: string;
   teaser: string;
 };
 
@@ -69,7 +69,7 @@ const Template = ({ templateParent }: { templateParent: string | null }) => {
           rowid: data.rowid,
           template: {
             teaser: teaserFields,
-            fields: contentFields,
+            content: contentFields,
           },
         }),
       });

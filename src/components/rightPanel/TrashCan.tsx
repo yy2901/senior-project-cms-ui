@@ -64,7 +64,7 @@ const TrashCan = memo(() => {
   };
   const recoverTemplate = (id: number) => {
     return async () => {
-      await fetch(process.env.REACT_APP_CMS_BACKEND + "/_editor/templates", {
+      await fetch("/_editor/templates", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -152,7 +152,7 @@ const TrashCan = memo(() => {
                 <th>delete permanantly</th>
               </tr>
               {data.routes.map((route) => (
-                <tr>
+                <tr key={route.rowid}>
                   <td>{route.rowid}</td>
                   <td>{route.route}</td>
                   <td>
@@ -181,7 +181,7 @@ const TrashCan = memo(() => {
                 <th>delete permanantly</th>
               </tr>
               {data.templates.map((template) => (
-                <tr>
+                <tr key={template.rowid}>
                   <td>{template.rowid}</td>
                   <td>{template.parent}</td>
                   <td>
@@ -213,7 +213,7 @@ const TrashCan = memo(() => {
                 <th>delete permanantly</th>
               </tr>
               {data.entries.map((entry) => (
-                <tr>
+                <tr key={entry.rowid}>
                   <td>{entry.rowid}</td>
                   <td>{entry.title}</td>
                   <td>{entry.slug}</td>

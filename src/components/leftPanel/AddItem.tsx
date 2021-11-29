@@ -14,7 +14,7 @@ const AddItem = ({ refresh }: AddItemType) => {
   const dispatch = useDispatch<AppDispatch>();
   const createRoute = async () => {
     const newRoute = inputRoute.current?.value;
-    if (newRoute === "uploads" || newRoute === "dashboard") {
+    if (newRoute === "_fonts") {
       console.log("Illegal route name");
       return;
     }

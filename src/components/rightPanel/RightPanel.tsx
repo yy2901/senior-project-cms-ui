@@ -4,6 +4,7 @@ import { RightPanelModal } from "../../redux/rightPanelReducer";
 import { RootState } from "../../redux/store";
 import "../../styles/RightPanel.scss";
 import Entry from "./Entry";
+import FontManager from "./FontManager";
 import Route from "./Route";
 import Template from "./Template";
 import TrashCan from "./TrashCan";
@@ -18,6 +19,7 @@ const RightPanel = memo(() => {
       {modal === RightPanelModal.ENTRY && <Entry />}
       {modal === RightPanelModal.TEMPLATE && <Template />}
       {modal === RightPanelModal.ROUTE && <Route />}
+      {modal === RightPanelModal.FONT && <FontManager />}
     </div>
   );
 });

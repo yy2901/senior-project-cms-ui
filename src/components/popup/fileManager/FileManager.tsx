@@ -61,7 +61,7 @@ const FileManager = () => {
           {files
             .filter((f) => f.rowid === selected)
             .map((preview) => (
-              <div className="fileManager__preview">
+              <div className="fileManager__preview" key={preview.rowid}>
                 <div className="fileManager__preview__view">
                   {["png", "jpg", "webp", "jpeg"].includes(
                     preview.extension.toLowerCase()

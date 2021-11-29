@@ -1,12 +1,8 @@
 import {
   ContentBlock,
   ContentState,
-  convertToRaw,
-  DraftBlockType,
   EditorState,
-  Entity,
   Modifier,
-  RichUtils,
   SelectionState,
 } from "draft-js";
 import { useState } from "react";

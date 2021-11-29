@@ -6,6 +6,7 @@ import DeletedButton from "./DeletedButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import ToggleFileManagerButton from "./ToggleFileManagerButton";
+import ToggleFontManagerButton from "./ToggleFontManagerButton";
 
 type API = {
   rowid: number;
@@ -25,10 +26,11 @@ const LeftPanel = () => {
   useEffect(() => {
     refresh();
   }, [refresher]);
+  const filteredApis = apis.filter((api) => api.route !== "/_fonts");
   return (
     <div className="left-panel">
-      {apis.length ? (
-        apis.map((api) => (
+      {filteredApis.length ? (
+        filteredApis.map((api) => (
           <Item
             key={api.rowid}
             rowid={api.rowid}
@@ -42,6 +44,7 @@ const LeftPanel = () => {
       <AddItem refresh={refresh} />
       <DeletedButton />
       <ToggleFileManagerButton />
+      <ToggleFontManagerButton />
     </div>
   );
 };
