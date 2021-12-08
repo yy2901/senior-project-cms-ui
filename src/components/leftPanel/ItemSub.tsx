@@ -1,5 +1,6 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import dateParser from "../../helpers/dateParser";
 import { generateEntryName } from "../../helpers/generateEntryName";
 import { setEntrySlug, setTemplateParent } from "../../redux/rightPanelReducer";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -14,6 +15,7 @@ type Entries = {
   title: string;
   name: string;
   slug: string;
+  time: number;
 }[];
 
 const ItemSub = memo(({ route, expand }: ItemSubProp) => {
@@ -140,6 +142,9 @@ const ItemSub = memo(({ route, expand }: ItemSubProp) => {
                       </div>
                       <div className="left-panel__item__entry-title">
                         {entry.title}
+                      </div>
+                      <div className="left-panel__item__entry-slug">
+                        {dateParser(entry.time)}
                       </div>
                     </button>
                   </div>

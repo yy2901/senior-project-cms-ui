@@ -6,6 +6,7 @@ import {
   RightPanelModal,
   setModal,
   setRouteUrl,
+  setTemplateParent,
 } from "../../redux/rightPanelReducer";
 import { AppDispatch } from "../../redux/store";
 import ItemSub from "./ItemSub";
@@ -25,6 +26,7 @@ const Item = memo(({ rowid, route, refresh }: ItemProps) => {
     const newRoute =
       renamingValue && renamingValue.current && renamingValue.current.value;
     if (newRoute && newRoute.length > 0) {
+      const parsedNewRoute = "/" + parseDashCase(newRoute);
       await fetch("/_editor/api-routes", {
         method: "PUT",
         headers: {
@@ -33,10 +35,11 @@ const Item = memo(({ rowid, route, refresh }: ItemProps) => {
         body: JSON.stringify({
           rowid: rowid,
           apiRoute: {
-            route: "/" + parseDashCase(newRoute),
+            route: parsedNewRoute,
           },
         }),
       });
+      dispatch(setModal(RightPanelModal.EMPTY));
     }
   };
   const deleteRoute = async () => {

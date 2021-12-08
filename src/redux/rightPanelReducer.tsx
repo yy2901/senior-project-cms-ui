@@ -6,6 +6,7 @@ export enum RightPanelModal {
   ROUTE,
   ENTRY,
   FONT,
+  EMPTY,
 }
 
 interface RightPanelState {
