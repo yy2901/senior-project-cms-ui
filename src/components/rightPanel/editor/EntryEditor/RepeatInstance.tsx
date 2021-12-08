@@ -1,9 +1,10 @@
+import { v4 as uuidv4 } from "uuid";
 import { moveBlock } from "../../../../helpers/moveBlock";
 import { RepeatType } from "../TemplateEditor/Repeat";
 import FieldsParser from "./FieldsParser";
 
 type RepeatInstanceProps = {
-  data: any[];
+  data: { [key: string]: any; id: string | null }[];
   setData: (data: any) => void;
   fields: RepeatType;
 };
@@ -41,7 +42,7 @@ const RepeatInstance = ({ data, setData, fields }: RepeatInstanceProps) => {
       ))}
       <button
         onClick={() => {
-          setData([...data, {}]);
+          setData([...data, { id: uuidv4() }]);
         }}
       >
         Add Item

@@ -2,6 +2,8 @@ import { sanitize } from "dompurify";
 import { moveBlock } from "../../../../helpers/moveBlock";
 import { FlexibleType } from "../TemplateEditor/Flexible";
 import FieldsParser from "./FieldsParser";
+import { v4 as uuidv4 } from "uuid";
+import { useEffect } from "react";
 
 type FlexibleInstanceItemFlieldsDataType = {
   [key: string]: any;
@@ -10,6 +12,7 @@ type FlexibleInstanceItemFlieldsDataType = {
 type FlexibleInstanceItemDataType = {
   type: string;
   fields: FlexibleInstanceItemFlieldsDataType;
+  id: string | null;
 };
 
 type FlexibleInstanceProps = {
@@ -52,7 +55,10 @@ const FlexibleInstance = ({
       ))}
       <button
         onClick={() => {
-          setData([...data, { type: flexibleModes[0].name, fields: {} }]);
+          setData([
+            ...data,
+            { type: flexibleModes[0].name, fields: {}, id: uuidv4() },
+          ]);
         }}
       >
         Add Item
