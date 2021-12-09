@@ -79,17 +79,13 @@ const Mode = ({ mode, setMode, deleteMode }: ModeProps) => {
   };
   const [editing, setEditing] = useState(false);
   const [modeInputName, setModeInputName] = useState(mode.name);
-  const setModeName = (newName: string) => {
-    const newMode = { ...mode };
-    newMode.name = newName;
-    setMode(newMode);
-  };
-  const setModeDisplay = (newDisplay: string) => {
-    const newMode = { ...mode };
-    newMode.display = sanitize(newDisplay);
-    setMode(newMode);
-  };
   const [modeDisplayInput, setModeDisplayInput] = useState(mode.display);
+  const setModeLabel = () => {
+    const newMode = { ...mode };
+    newMode.name = modeInputName;
+    newMode.display = sanitize(modeDisplayInput);
+    setMode(newMode);
+  };
   return (
     <div
       style={{
@@ -113,8 +109,7 @@ const Mode = ({ mode, setMode, deleteMode }: ModeProps) => {
             ></textarea>
             <button
               onClick={() => {
-                setModeName(modeInputName);
-                setModeDisplay(modeDisplayInput);
+                setModeLabel();
                 setEditing(false);
               }}
             >
