@@ -5,7 +5,7 @@ import {
   Modifier,
   SelectionState,
 } from "draft-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomCSSType } from "../../TemplateEditor/WYSIWYG";
 
 type LinkToolProps = {
@@ -35,6 +35,7 @@ const LinkDecorator =
 const LinkTool = ({ editorState, setEditorState }: LinkToolProps) => {
   const [editing, setEditing] = useState(false);
   const [input, setInput] = useState("");
+  const [newWindow, setNewWindow] = useState(false);
 
   const getSelectedBlock = () => {
     return editorState
@@ -60,7 +61,7 @@ const LinkTool = ({ editorState, setEditorState }: LinkToolProps) => {
       .getCurrentContent()
       .createEntity("LINK", "MUTABLE", {
         url: input,
-        new_window: false,
+        new_window: newWindow,
       });
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
     const contentStateWithLink = Modifier.applyEntity(
@@ -72,6 +73,7 @@ const LinkTool = ({ editorState, setEditorState }: LinkToolProps) => {
       currentContent: contentStateWithLink,
     });
     setEditorState(newEditorStateWithUpdatedContent);
+    setEditing(false);
   };
 
   const removeLink = () => {
@@ -104,40 +106,50 @@ const LinkTool = ({ editorState, setEditorState }: LinkToolProps) => {
         }
       );
     }
-    // const contentStateWithLink = Modifier.applyEntity(
-    //   editorState.getCurrentContent(),
-    //   ,
-    //   null
-    // );
-    // setEditorState(
-    //   EditorState.set(editorState, { currentContent: contentStateWithLink })
-    // );
   };
+
+  useEffect(() => {
+    setEditing(false);
+  }, [getSelectedLink()]);
 
   return (
     <>
-      <button
-        style={{ color: getSelectedLink() ? "red" : "black" }}
-        onClick={() => {
-          setEditing(!editing);
-        }}
-      >
-        Link
-      </button>
-      {getSelectedLink() && (
-        <>
-          <button onClick={removeLink}>Remove Link</button>
-          <span>{getSelectedLink()?.getData().url}</span>
-        </>
+      {!editing && (
+        <button
+          onClick={() => {
+            setEditing(!editing);
+          }}
+        >
+          {getSelectedLink() ? "Edit Link" : "Add Link"}
+        </button>
       )}
-      {editing && (
+      {editing ? (
         <>
           <input
-            defaultValue={input}
+            defaultValue={getSelectedLink()?.getData().url}
             onChange={(e) => setInput(e.target.value)}
           ></input>
+          <input
+            type="checkbox"
+            defaultValue={getSelectedLink()?.getData().new_window}
+            onChange={(e) => setNewWindow(e.target.checked)}
+          ></input>{" "}
+          open in new window
           <button onClick={confirmLink}>Y</button>
+          <button onClick={() => setEditing(false)}>N</button>
         </>
+      ) : (
+        getSelectedLink() && (
+          <>
+            <button onClick={removeLink}>Remove Link</button>
+            <span>{getSelectedLink()?.getData().url}&nbsp;&nbsp;&nbsp;</span>
+            <span>
+              {" "}
+              open in new window:{" "}
+              {getSelectedLink()?.getData().new_window ? "yes" : "no"}
+            </span>
+          </>
+        )
       )}
     </>
   );
