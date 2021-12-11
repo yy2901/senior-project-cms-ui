@@ -1,5 +1,6 @@
 import { sanitize } from "dompurify";
 import { useState } from "react";
+import { parseDashCase } from "../../../../helpers/parseDashCase";
 import Fields, { FieldsType } from "./Fields";
 
 type ModeType = {
@@ -82,7 +83,7 @@ const Mode = ({ mode, setMode, deleteMode }: ModeProps) => {
   const [modeDisplayInput, setModeDisplayInput] = useState(mode.display);
   const setModeLabel = () => {
     const newMode = { ...mode };
-    newMode.name = modeInputName;
+    newMode.name = parseDashCase(modeInputName);
     newMode.display = sanitize(modeDisplayInput);
     setMode(newMode);
   };
