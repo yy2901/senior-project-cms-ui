@@ -112,6 +112,13 @@ const LinkTool = ({ editorState, setEditorState }: LinkToolProps) => {
     setEditing(false);
   }, [getSelectedLink()]);
 
+  useEffect(() => {
+    if (editing) {
+      setInput(getSelectedLink()?.getData().url);
+      setNewWindow(getSelectedLink()?.getData().new_window);
+    }
+  }, [editing]);
+
   return (
     <>
       {!editing && (
@@ -126,15 +133,15 @@ const LinkTool = ({ editorState, setEditorState }: LinkToolProps) => {
       {editing ? (
         <>
           <input
-            defaultValue={getSelectedLink()?.getData().url}
+            defaultValue={input}
             onChange={(e) => setInput(e.target.value)}
           ></input>
-          <input
-            type="checkbox"
-            defaultValue={getSelectedLink()?.getData().new_window}
-            onChange={(e) => setNewWindow(e.target.checked)}
-          ></input>{" "}
-          open in new window
+          <button
+            style={{ opacity: newWindow ? "0.5" : 1 }}
+            onClick={() => setNewWindow(!newWindow)}
+          >
+            Open in New Window
+          </button>{" "}
           <button onClick={confirmLink}>Y</button>
           <button onClick={() => setEditing(false)}>N</button>
         </>

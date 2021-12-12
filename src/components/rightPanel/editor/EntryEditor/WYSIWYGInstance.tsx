@@ -8,7 +8,7 @@ import {
   CompositeDecorator,
   DraftBlockRenderMap,
 } from "draft-js";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { WYSIWYGCustomStyleTypes } from "../TemplateEditor/WYSIWYG";
 import LinkTool, {
   LinkDecorator,
@@ -23,6 +23,7 @@ type Props = {
 };
 
 const WYSIWYGInstance = ({ data, setData, options }: Props) => {
+  const editorRef = useRef<any>(null);
   const compositeDecorator = new CompositeDecorator([
     {
       strategy: linkDecoratorStrategy,
@@ -59,6 +60,20 @@ const WYSIWYGInstance = ({ data, setData, options }: Props) => {
   const toggleStyle = (style: string) => {
     setEditorState(RichUtils.toggleInlineStyle(editorState, style));
   };
+  const clearFormat = () => {
+    if (isStyle("BOLD")) {
+      setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
+    }
+    if (isStyle("CODE")) {
+      setEditorState(RichUtils.toggleInlineStyle(editorState, "CODE"));
+    }
+    if (isStyle("ITALIC")) {
+      setEditorState(RichUtils.toggleInlineStyle(editorState, "ITALIC"));
+    }
+    if (isStyle("UNDERLINE")) {
+      setEditorState(RichUtils.toggleInlineStyle(editorState, "UNDERLINE"));
+    }
+  };
   const toggleBlock = (blockStyle: string) =>
     setEditorState(RichUtils.toggleBlockType(editorState, blockStyle));
   const isBlock = (blockStyle: string) =>
@@ -68,6 +83,7 @@ const WYSIWYGInstance = ({ data, setData, options }: Props) => {
       .getType() === blockStyle;
   useEffect(() => {
     setData(convertToRaw(editorState.getCurrentContent()));
+    editorRef.current.focus();
   }, [editorState]);
   return (
     <div>
@@ -95,12 +111,15 @@ const WYSIWYGInstance = ({ data, setData, options }: Props) => {
       ))}
       <br />
       <LinkTool editorState={editorState} setEditorState={setEditorState} />
+      &nbsp;&nbsp;&nbsp;
+      <button onClick={() => clearFormat()}>clear format</button>
       <div style={{ border: "1px solid #666" }}>
         <Editor
           editorState={editorState}
           onChange={setEditorState}
           customStyleMap={inlineStyleMap}
           blockRenderMap={blockRenderMap}
+          ref={(ref) => (editorRef.current = ref)}
         />
       </div>
     </div>
