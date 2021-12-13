@@ -74,8 +74,9 @@ const WYSIWYGInstance = ({ data, setData, options }: Props) => {
       setEditorState(RichUtils.toggleInlineStyle(editorState, "UNDERLINE"));
     }
   };
-  const toggleBlock = (blockStyle: string) =>
+  const toggleBlock = (blockStyle: string) => {
     setEditorState(RichUtils.toggleBlockType(editorState, blockStyle));
+  };
   const isBlock = (blockStyle: string) =>
     editorState
       .getCurrentContent()
@@ -83,7 +84,6 @@ const WYSIWYGInstance = ({ data, setData, options }: Props) => {
       .getType() === blockStyle;
   useEffect(() => {
     setData(convertToRaw(editorState.getCurrentContent()));
-    editorRef.current.focus();
   }, [editorState]);
   return (
     <div>

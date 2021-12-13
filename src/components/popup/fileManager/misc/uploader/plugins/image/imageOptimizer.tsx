@@ -26,7 +26,12 @@ const compressThenUpload = async (
   }
   canvas.width = image.width * scale;
   canvas.height = image.height * scale;
-  canvas.getContext("2d")?.drawImage(image, 0, 0, canvas.width, canvas.height);
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+  }
   const convertThenUpload = async () => {
     return new Promise<string | null>((res) => {
       canvas.toBlob(
