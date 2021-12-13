@@ -22,6 +22,7 @@ const ItemSub = memo(({ route, expand }: ItemSubProp) => {
   const refresher = useSelector(
     (state: RootState) => state.leftPanelReducer.refresher
   );
+  const role = useSelector((state: RootState) => state.userReducer.role);
   const dispatch = useDispatch<AppDispatch>();
   const [hasTemplate, setHasTemplate] = useState(false);
   const [entries, setEntries] = useState<Entries>([]);
@@ -84,19 +85,21 @@ const ItemSub = memo(({ route, expand }: ItemSubProp) => {
     <div>
       {expand ? (
         <>
-          <div className="left-panel__grey-wrapper left-panel__item__grey-wrapper">
-            {hasTemplate ? (
-              <button
-                onClick={() => {
-                  dispatch(setTemplateParent(route));
-                }}
-              >
-                Edit Template
-              </button>
-            ) : (
-              <button onClick={() => addTemplate()}>Add Template</button>
-            )}
-          </div>
+          {role === "DEVELOPER" && (
+            <div className="left-panel__grey-wrapper left-panel__item__grey-wrapper">
+              {hasTemplate ? (
+                <button
+                  onClick={() => {
+                    dispatch(setTemplateParent(route));
+                  }}
+                >
+                  Edit Template
+                </button>
+              ) : (
+                <button onClick={() => addTemplate()}>Add Template</button>
+              )}
+            </div>
+          )}
           <div className="left-panel__grey-wrapper left-panel__item__grey-wrapper">
             {addingEntry ? (
               <div className="left-panel__flex left-panel__flex--align-center">

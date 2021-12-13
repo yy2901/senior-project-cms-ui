@@ -3,6 +3,7 @@ import rightPanelReducer from "./rightPanelReducer";
 import leftPanelReducer from "./leftPanelReducer";
 import fileManagerReducer from "./fileManagerReducer";
 import fontInjectionReducer from "./fontInjectionReducer";
+import userReducer from "./userReducer";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     leftPanelReducer,
     fileManagerReducer,
     fontInjectionReducer,
+    userReducer,
   },
 });
 

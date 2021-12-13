@@ -20,6 +20,7 @@ const Route = ({ routeUrl }: { routeUrl: string | null }) => {
   const refresher = useSelector(
     (state: RootState) => state.rightPanelReducer.refresher
   );
+  const role = useSelector((state: RootState) => state.userReducer.role);
   const refresh = () => {
     fetch("/_editor/api-routes" + routeUrl)
       .then((res) => res.json())
@@ -81,14 +82,18 @@ const Route = ({ routeUrl }: { routeUrl: string | null }) => {
       <h2>{data?.route}</h2>
       {data && (
         <div>
-          <TemplateEditor
-            template={template ? template : { fields: [] }}
-            setTemplate={setTemplate}
-          />
-          <button onClick={updateTemplate}>update template</button>
-          <br />
-          <br />
-          <br />
+          {role === "DEVELOPER" && (
+            <>
+              <TemplateEditor
+                template={template ? template : { fields: [] }}
+                setTemplate={setTemplate}
+              />
+              <button onClick={updateTemplate}>update template</button>
+              <br />
+              <br />
+              <br />
+            </>
+          )}
           <EntryEditor
             template={template ? template : { fields: [] }}
             data={content ? content : {}}
